@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+  <Properties>
+    <Property name="filename">SntpTest.out</Property>
+  </Properties>
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+    </Console>
+          <RollingFile name="Rolling" fileName="${filename}"
+                       filePattern="${filename}.%i.log.gz">
+            <PatternLayout>
+              <pattern>%-5p %d [%t] %l - %m%n</pattern>
+            </PatternLayout>
+            <SizeBasedTriggeringPolicy size="500" />
+          </RollingFile>
+  </Appenders>
+  <Loggers>
+    <Logger name="com.dea42.ntpChk" level="INFO" >
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="Rolling"/>
+    </Logger>
+    <Root level="WARN">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="Rolling"/>
+    </Root>
+  </Loggers>
+</Configuration>
