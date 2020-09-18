@@ -20,8 +20,12 @@ public class ResponseInfo {
 	private long response_stratum;
 	private long response_response_ticks;
 	private long response_size;
+	// errors found with response
 	private List<String> errors = new ArrayList<String>();
+	// hostname or IP
 	private String host;
+	// human label
+	private String name;
 
 	/**
 	 * 
@@ -31,9 +35,11 @@ public class ResponseInfo {
 
 	/**
 	 * @param host
+	 * @param name TODO
 	 */
-	public ResponseInfo(String host) {
+	public ResponseInfo(String host, String name) {
 		this.host = host;
+		this.name = name;
 	}
 
 	/**
@@ -195,6 +201,20 @@ public class ResponseInfo {
 		return host;
 	}
 
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -204,7 +224,9 @@ public class ResponseInfo {
 				.append(", response_root_delay=").append(response_root_delay).append(", response_dispersion=")
 				.append(response_dispersion).append(", response_stratum=").append(response_stratum)
 				.append(", response_response_ticks=").append(response_response_ticks).append(", response_size=")
-				.append(response_size).append(", errors=").append(errors).append(", host=").append(host).append("]");
+				.append(response_size).append(", errors=").append(errors).append(", host=").append(host)
+				.append(", name=").append(name).append("]");
 		return builder.toString();
 	}
+
 }

@@ -42,15 +42,17 @@ public class SntpTest {
 
 	/**
 	 * Sends an NTP request to the given host and processes the response.
-	 *
+	 * 
+	 * @param name            TODO
 	 * @param ntpHost         host name of the server.
 	 * @param timeoutInMillis network timeout in milliseconds.
+	 *
 	 * @throws Exception
 	 */
-	private ResponseInfo requestTime(String ntpHost, int timeoutInMillis) {
+	private ResponseInfo requestTime(String name, String ntpHost, int timeoutInMillis) {
 
 		DatagramSocket socket = null;
-		ResponseInfo ri = new ResponseInfo(ntpHost);
+		ResponseInfo ri = new ResponseInfo(ntpHost, name);
 
 		try {
 
@@ -256,22 +258,22 @@ public class SntpTest {
 			if (TIMEOUT_KEY.equals(key))
 				continue;
 
-			ResponseInfo ri = requestTime(bundle.getString(key), timeoutInMillis);
+			ResponseInfo ri = requestTime(key, bundle.getString(key), timeoutInMillis);
 			LOGGER.info(ri.toString());
 			if (ri.isGood()) {
 				goodCnt++;
 				totalOffsets += ri.getOffset();
 				goodHosts.add(ri);
 			} else {
-				LOGGER.error(ri.getHost() + ":" + ri.getErrors());
+				LOGGER.error(ri.getName() + ":" + ri.getHost() + ":" + ri.getErrors());
 			}
 		}
 		long avg = totalOffsets / goodCnt;
 		LOGGER.warn("---------------------------------------");
 		LOGGER.warn("Average offset from " + goodCnt + " good responders:" + avg + " millisecs");
-		LOGGER.warn("host:\toffset:\tDeviation");
+		LOGGER.warn("name:\thost:\toffset:\tDeviation");
 		for (ResponseInfo ri : goodHosts) {
-			LOGGER.warn(ri.getHost() + ":\t" + ri.getOffset() + ":\t" + (ri.getOffset() - avg));
+			LOGGER.warn(ri.getName() + ":\t" + ri.getHost() + ":\t" + ri.getOffset() + ":\t" + (ri.getOffset() - avg));
 		}
 	}
 
